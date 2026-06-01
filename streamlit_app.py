@@ -4,12 +4,6 @@ from google import genai
 import os
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-# Temporary debug line
-if not os.environ.get("GEMINI_API_KEY"):
-    st.error("API key not found! Check your secrets.")
-else:
-    st.success("API key loaded successfully!")
-
 st.title("📚 AI Study Assistant")
 st.caption("Ask me anything — I'll help you study!")
 
@@ -31,7 +25,7 @@ if prompt := st.chat_input("Ask a study question..."):
     st.session_state.history.append({"role": "user", "parts": [{"text": prompt}]})
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-2.0-flash",
         contents=st.session_state.history,
         config={
             "system_instruction": "You are a friendly study assistant. Explain topics clearly with simple language and examples. If the student asks for a quiz, generate questions on that topic."
