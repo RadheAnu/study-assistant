@@ -4,6 +4,12 @@ from google import genai
 import os
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
+# Temporary debug line
+if not os.environ.get("GEMINI_API_KEY"):
+    st.error("API key not found! Check your secrets.")
+else:
+    st.success("API key loaded successfully!")
+
 st.title("📚 AI Study Assistant")
 st.caption("Ask me anything — I'll help you study!")
 
