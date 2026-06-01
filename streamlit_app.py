@@ -25,7 +25,7 @@ if prompt := st.chat_input("Ask a study question..."):
     st.session_state.history.append({"role": "user", "parts": [{"text": prompt}]})
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model ="gemini-1.5-flash-8b",
         contents=st.session_state.history,
         config={
             "system_instruction": "You are a friendly study assistant. Explain topics clearly with simple language and examples. If the student asks for a quiz, generate questions on that topic."

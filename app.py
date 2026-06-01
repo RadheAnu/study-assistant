@@ -18,7 +18,7 @@ def chat_route():
     chat_history.append({"role": "user", "parts": [{"text": user_message}]})
     
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model ="gemini-1.5-flash-8b",
         contents=chat_history,
         config={
             "system_instruction": "You are a friendly study assistant. Explain topics clearly with simple language and examples. If the student asks for a quiz, generate questions on that topic."
