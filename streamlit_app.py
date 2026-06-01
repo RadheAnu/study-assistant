@@ -1,7 +1,7 @@
+import os
 import streamlit as st
 from google import genai
 
-import os
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 st.title("📚 AI Study Assistant")
@@ -22,18 +22,27 @@ if prompt := st.chat_input("Ask a study question..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    st.session_state.history.append({"role": "user", "parts": [{"text": prompt}]})
+    st.session_state.history.append({
+        "role": "user",
+        "parts": [{"text": prompt}]
+    })
 
-    response = client.models.generate_content(
-        model ="gemini-1.5-flash-8b",
-        contents=st.session_state.history,
-        config={
-            "system_instruction": "You are a friendly study assistant. Explain topics clearly with simple language and examples. If the student asks for a quiz, generate questions on that topic."
-        }
-    )
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=st.session_state.history,
+            config={
+                "system_instruction": "You are a friendly study assistant. Explain topics clearly with simple language and examples. If the student asks for a quiz, generate questions on that topic."
+            }
+        )
+        reply = response.text
+        st.session_state.history.append({
+            "role": "model",
+            "parts": [{"text": reply}]
+        })
+        st.session_state.messages.append({"role": "assistant", "content": reply})
+        with st.chat_message("assistant"):
+            st.markdown(reply)
 
-    reply = response.text
-    st.session_state.history.append({"role": "model", "parts": [{"text": reply}]})
-    st.session_state.messages.append({"role": "assistant", "content": reply})
-    with st.chat_message("assistant"):
-        st.markdown(reply)
+    except Exception as e:
+        st.error("⚠️ The AI is busy right now. Please wait 30 seconds and try again.")
