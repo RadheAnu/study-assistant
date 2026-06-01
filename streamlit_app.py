@@ -1,6 +1,7 @@
 import streamlit as st
 from google import genai
 
+import os
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 st.title("📚 AI Study Assistant")
